@@ -1,0 +1,19 @@
+name: Build E2E Image
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  build:
+    runs-on: [self-hosted]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Sync Yocto
+      run: bash sync_yocto.sh
+    - name: Build Image
+      run: source tg-init-build-env meta-x86 build-x86 && bitbake e2e-image
